@@ -1,4 +1,4 @@
-from socket import create_server, socket
+from socket import _RetAddress, create_server, socket
 from threading import Thread
 
 
@@ -6,7 +6,9 @@ def main() -> None:
     server_socket: socket = create_server(("localhost", 6379), reuse_port=True)
 
     while True:
-        client_connection, _ = server_socket.accept()  # wait for client
+        client_connection: socket
+        addr: _RetAddress
+        client_connection, addr = server_socket.accept()  # wait for client
         Thread(target=handle_connection, args=(client_connection,)).start()
 
 
