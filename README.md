@@ -2,9 +2,14 @@
 
 ## Table of Contents
 
-### Developer Guides
 
-#### setup
+- [Developer Guides](#developer-guides)
+  - [setup](#setup)
+
+
+## Developer Guides
+
+### setup
 
 ```bash
 $ python3 -m venv --upgrade-deps venv

@@ -1,5 +1,8 @@
-from socket import _RetAddress, create_server, socket
+from socket import create_server, socket
 from threading import Thread
+from typing import Any
+
+from domain.model.resp_decoder import RESPDecoder
 
 
 def main() -> None:
@@ -7,16 +10,26 @@ def main() -> None:
 
     while True:
         client_connection: socket
-        addr: _RetAddress
-        client_connection, addr = server_socket.accept()  # wait for client
+        client_connection, _ = server_socket.accept()  # wait for client
         Thread(target=handle_connection, args=(client_connection,)).start()
 
 
 def handle_connection(client_connection: socket) -> None:
     while True:
         try:
-            client_connection.recv(1024)
-            client_connection.send(b"+PONG\r\n")
+            data: bytes | list[Any] = RESPDecoder(client_connection).decode()
+            assert type(data[0]) is bytes
+            command: bytes = data[0]
+
+            match command:
+                case b"ping":
+                    client_connection.send(b"+PONG\r\n")
+                case b"echo":
+                    args = data[1:]
+                    assert type(args[0]) is bytes
+                    client_connection.send(b"$%d\r\n%b\r\n" % (len(args[0]), args[0]))
+                case _:
+                    client_connection.send(b"-ERR unknown command\r\n")
         except ConnectionError:
             break
 
