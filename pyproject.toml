@@ -4,17 +4,18 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fum1t0.simple-redis"
+version = "0.0.1"
 description = ""
+authors = [
+  { name = "Fumito Konaka", email = "fum1t0.eng@gmail.com" }
+]
 readme = "README.md"
 requires-python = ">=3.11"
 classifiers = [
     "Programming Language :: Python :: 3",
 ]
-author = [
-  { name = "Fumito Konaka", email = "fum1t0.eng@gmail.com" }
-]
 
-[project.optional-depndencies]
+[project.optional-dependencies]
 dev = [
   "black==23.3.0",
   "isort==5.12.0",
