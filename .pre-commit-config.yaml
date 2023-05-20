@@ -1,0 +1,13 @@
+repos:
+  - repo: local
+    hooks:
+      - id: format
+        name: format
+        entry: bash -c "changeFiles=$(git --no-pager diff --name-status --no-color --diff-filter=d --cached | awk '{ if ($1 ~ /R.*/ && $2 ~ /\.py/) { print $3 } else if ($1 != "D" && $2 ~ /\.py/) { print $2 } }') && isort $(git rev-parse --show-superproject-working-tree --show-toplevel | head -1)/src && black $(git rev-parse --show-superproject-working-tree --show-toplevel | head -1)/src && for sourceFilePath in $changeFiles; do git add $sourceFilePath; done;"
+        language: system
+        type: [python]
+      - id: lint
+        name: lint
+        entry: bash -c 'flake8 $(git rev-parse --show-superproject-working-tree --show-toplevel | head -1)/src && mypy $(git rev-parse --show-superproject-working-tree --show-toplevel | head -1)/src'
+        language: system
+        type: [python]
