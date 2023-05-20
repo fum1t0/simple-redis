@@ -8,6 +8,6 @@ repos:
         type: [python]
       - id: lint
         name: lint
-        entry: bash -c 'flake8 $(git rev-parse --show-superproject-working-tree --show-toplevel | head -1)/src && mypy $(git rev-parse --show-superproject-working-tree --show-toplevel | head -1)/src'
+        entry: bash -c 'flake8 $(git rev-parse --show-superproject-working-tree --show-toplevel | head -1)/src && tox -e mypy'
         language: system
         type: [python]
